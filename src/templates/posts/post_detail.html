@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }}</title>
+    <link rel="stylesheet" type="text/css" href='{% static "css/post_detail.css" %}'>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h2 class="header-content__title">Estoico</h2>
+        </div>
+        <nav class="header-nav">
+            <ul class="nav-content">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#"></i>Contact</a></li>
+            </ul>
+            <div class="profile">
+                <img class="profile__img" src="{{ user.profile_picture.url }}">
+            </div>
+        </nav>
+    </header>
+    <div class="post">
+        <header class="post-header">
+            <div class="post-content-title">
+                <h1 class="post-content-title__title">{{ post.title }}</h1>
+                <span class="post-content-date">{{ post.publish_date }}</span>
+            </div>
+            <div class="post-header-content">
+                <img class="post-header-content__img" src="{{ post.thumbnail.url }}">
+            </div>
+        </header>
+        <div class="post-content">
+            <p class="post-content__text">{{ post.content|linebreaksbr }}</p>
+        </div>
+        <footer class="footer">
+            {% if request.user.is_authenticated %}
+                <form method ="POST" class="form">
+                    {% csrf_token %}
+                    {{ form.as_p}}
+                    <input type="submit" class="form__submit" value="Public">
+                </form>
+            {% endif %}
+            <div class="comments-list">
+                {% for comment in post.comments %}
+                    <div class="comment">
+                        <div class="comment-profile">
+                            <img class="comment-profile__img" src="{{ comment.user.profile_picture.url }}">
+                        </div>
+                        <div class="comment-detail">
+                            <h2 class="comment-username">{{ comment.user.username }}</h2>
+                            <p class="comment-content__text">
+                                {{ comment.content }}
+                            </p>
+                        </div>
+                    </div>    
+                {% endfor %}
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>

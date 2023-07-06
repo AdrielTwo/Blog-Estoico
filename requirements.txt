@@ -1,0 +1,4 @@
+Django==3.2.6
+Django-environ==0.4.5
+Pillow==9.5.0
+pytz==2023.3
